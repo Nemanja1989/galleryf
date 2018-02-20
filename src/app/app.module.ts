@@ -12,6 +12,10 @@ import {RegisterComponent} from './components/register/register.component';
 import {AppRoutingModule} from './routing/routing.module';
 import {MygalleryComponent} from './components/mygallery/mygallery.component';
 import {FormsModule} from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http';
+import {AuthService} from './services/auth.service';
+import {AuthGuard} from './guards/auth.guard';
+import {GalleryService} from './services/gallery.service';
 
 
 @NgModule({
@@ -28,9 +32,14 @@ import {FormsModule} from '@angular/forms';
     imports: [
         BrowserModule,
         AppRoutingModule,
-        FormsModule
+        FormsModule,
+        HttpClientModule
     ],
-    providers: [],
+    providers: [
+        AuthService,
+        AuthGuard,
+        GalleryService
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {

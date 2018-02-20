@@ -6,6 +6,7 @@ import {RegisterComponent} from '../components/register/register.component';
 import {CreategalleryComponent} from '../components/creategallery/creategallery.component';
 import {HomepageComponent} from '../components/homepage/homepage.component';
 import {MygalleryComponent} from '../components/mygallery/mygallery.component';
+import {AuthGuard} from '../guards/auth.guard';
 
 @NgModule({
     imports: [
@@ -20,15 +21,18 @@ const appRoutes: Routes = [
     {
         path: '',
         redirectTo: '/all-galleries',
+        canActivate: [ AuthGuard ],
         pathMatch: 'full'
     },
     {
         path: 'all-galleries',
-        component: HomepageComponent
+        component: HomepageComponent,
+        canActivate: [ AuthGuard ]
     },
     {
         path: 'my-galleries',
-        component: MygalleryComponent
+        component: MygalleryComponent,
+        canActivate: [ AuthGuard ],
     },
     {
         path: 'login',
@@ -40,7 +44,8 @@ const appRoutes: Routes = [
     },
     {
         path: 'create',
-        component: CreategalleryComponent
+        component: CreategalleryComponent,
+        canActivate: [ AuthGuard ],
     }
 ];
 

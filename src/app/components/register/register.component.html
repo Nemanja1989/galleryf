@@ -51,6 +51,14 @@
         <input #confirm_password="ngModel" [(ngModel)]="user.confirm_password" name="confirm_password" type="text"
                class="form-control" required validateEqual="password">
     </div>
+    <div *ngIf="user.password !== user.confirm_password && (confirm_password.dirty || confirm_password.touched)" class="alert alert-danger">
+        <div  *ngIf="confirm_password.errors && confirm_password.errors.required">
+            Password is required
+        </div>
+        <div  *ngIf="user.password !== user.confirm_password">
+            Password is not matching!
+        </div>
+    </div>
 
     <div>
         <label>Terms of service</label>

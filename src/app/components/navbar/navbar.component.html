@@ -6,23 +6,23 @@
             <li class="nav-item">
                 <a class="nav-link" routerLink="/">All Galleries</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" *ngIf="auth.isAuthenticated">
                 <a class="nav-link" routerLink="/my-galleries">My Galleries</a>
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
+                <li class="nav-item" *ngIf="auth.isAuthenticated">
                     <a class="nav-link" routerLink="/create">Create New Gallery</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *ngIf="!auth.isAuthenticated">
                     <a class="nav-link" routerLink="/register">Register</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *ngIf="!auth.isAuthenticated">
                     <a class="nav-link" routerLink="/login">Login</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/logout">Logout</a>
+                <li class="nav-item" *ngIf="auth.isAuthenticated">
+                    <a class="nav-link" (click)="auth.logout()">Logout</a>
                 </li>
             </ul>
         </form>
