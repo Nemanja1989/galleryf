@@ -11,10 +11,15 @@ export class HomepageComponent implements OnInit {
 
     private galleries;
     private galleryService: GalleryService;
+    private selectCount = 10;
 
     constructor(private injector: Injector) {
+        this.loadData();
+    }
+
+    private loadData() {
         this.galleryService = this.injector.get(GalleryService);
-        this.galleryService.getGalleries().subscribe(
+        this.galleryService.getGalleries(this.selectCount).subscribe(
             data => {
                 this.galleries = data;
             },
@@ -25,6 +30,11 @@ export class HomepageComponent implements OnInit {
     }
 
     ngOnInit() {
+    }
+
+    loadMore() {
+        this.selectCount += 10;
+        this.loadData();
     }
 
 }

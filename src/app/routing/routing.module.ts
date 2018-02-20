@@ -21,13 +21,11 @@ const appRoutes: Routes = [
     {
         path: '',
         redirectTo: '/all-galleries',
-        canActivate: [ AuthGuard ],
         pathMatch: 'full'
     },
     {
         path: 'all-galleries',
-        component: HomepageComponent,
-        canActivate: [ AuthGuard ]
+        component: HomepageComponent
     },
     {
         path: 'my-galleries',

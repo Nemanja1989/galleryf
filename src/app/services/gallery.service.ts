@@ -9,26 +9,39 @@ import {Gallery} from '../models/gallery';
 export class GalleryService {
 
     private galleries;
+    private myGalleries;
 
     constructor(private http: HttpClient,
                 private authService: AuthService) {
     }
 
-    getGalleries() {
+    getGalleries(selectCount) {
         // clear array after logout
         this.galleries = [];
-        console.log('ovde sam');
         return new Observable((o: Observer<any>) => {
             this.http.get('http://localhost:8000/api/all-galleries', {
+                params: {selectCount: selectCount},
                 headers: this.authService.getRequestHeaders()
             }).subscribe((galleries: any[]) => {
                 this.galleries = galleries['data'];
-                /*
-                galleries['data'].forEach((c) => {
-                    this.galleries.push(new Gallery(c.id, c.first_name, c.last_name, c.email));
-                });*/
 
                 o.next(this.galleries);
+                return o.complete();
+            });
+        });
+    }
+
+    getMyGalleries(userId) {
+        // clear array after logout
+        this.myGalleries = [];
+        return new Observable((o: Observer<any>) => {
+            this.http.get('http://localhost:8000/api/my-galleries', {
+                params: {userId: userId},
+                headers: this.authService.getRequestHeaders()
+            }).subscribe((galleries: any[]) => {
+                this.myGalleries = galleries;
+
+                o.next(this.myGalleries);
                 return o.complete();
             });
         });
