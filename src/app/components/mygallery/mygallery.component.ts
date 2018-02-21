@@ -11,13 +11,21 @@ export class MygalleryComponent implements OnInit {
 
     private galleries;
     private galleryService: GalleryService;
+    private selectCount = 10;
 
     constructor(private injector: Injector) {
+        this.loadData();
+    }
+
+    ngOnInit() {
+    }
+
+    loadData() {
         let user = JSON.parse(window.localStorage.getItem('user'));
         let userId = user[0]['id'];
         console.log(userId);
         this.galleryService = this.injector.get(GalleryService);
-        this.galleryService.getMyGalleries(userId).subscribe(
+        this.galleryService.getMyGalleries(userId, this.selectCount).subscribe(
             data => {
                 console.log(data);
                 this.galleries = data;
@@ -29,7 +37,9 @@ export class MygalleryComponent implements OnInit {
         );
     }
 
-    ngOnInit() {
+    loadMore() {
+        this.selectCount += 10;
+        this.loadData();
     }
 
 }

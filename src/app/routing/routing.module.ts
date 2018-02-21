@@ -7,6 +7,8 @@ import {CreategalleryComponent} from '../components/creategallery/creategallery.
 import {HomepageComponent} from '../components/homepage/homepage.component';
 import {MygalleryComponent} from '../components/mygallery/mygallery.component';
 import {AuthGuard} from '../guards/auth.guard';
+import {GalleryComponent} from '../components/gallery/gallery.component';
+import {AuthorComponent} from '../components/author/author.component';
 
 @NgModule({
     imports: [
@@ -26,6 +28,14 @@ const appRoutes: Routes = [
     {
         path: 'all-galleries',
         component: HomepageComponent
+    },
+    {
+        path: 'galleries/:id',
+        component: GalleryComponent
+    },
+    {
+        path: 'authors/:id',
+        component: AuthorComponent
     },
     {
         path: 'my-galleries',

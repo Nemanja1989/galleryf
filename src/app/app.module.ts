@@ -16,6 +16,9 @@ import {HttpClientModule} from '@angular/common/http';
 import {AuthService} from './services/auth.service';
 import {AuthGuard} from './guards/auth.guard';
 import {GalleryService} from './services/gallery.service';
+import { GalleryComponent } from './components/gallery/gallery.component';
+import { AuthorComponent } from './components/author/author.component';
+import {CommentService} from './services/comment.service';
 
 
 @NgModule({
@@ -27,7 +30,9 @@ import {GalleryService} from './services/gallery.service';
         CreategalleryComponent,
         LoginComponent,
         RegisterComponent,
-        MygalleryComponent
+        MygalleryComponent,
+        GalleryComponent,
+        AuthorComponent
     ],
     imports: [
         BrowserModule,
@@ -38,7 +43,8 @@ import {GalleryService} from './services/gallery.service';
     providers: [
         AuthService,
         AuthGuard,
-        GalleryService
+        GalleryService,
+        CommentService
     ],
     bootstrap: [AppComponent]
 })

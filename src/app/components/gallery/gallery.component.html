@@ -1,0 +1,58 @@
+<div class="card mb-3">
+    <div class="card mb-3">
+        <h3 class="card-header" ><a [routerLink]="['/galleries', gallery?.id]">{{gallery?.title}}</a></h3>
+        <div class="card-body">
+            <div>
+                <a [routerLink]="['/authors', gallery.author_id]">{{gallery.user?.first_name}} {{gallery.user?.last_name}}</a>
+            </div>
+            <div>
+                <p class="card-text">{{gallery.created_at}}</p>
+            </div>
+            <h5 class="card-title">Description</h5>
+            <h6 class="card-subtitle text-muted">{{gallery.description}}</h6>
+        </div>
+
+
+        <div *ngFor="let picture of gallery['pictures']">
+            <img style="height: 200px; width: 200px; display: block;" src="{{picture.picture_url}}" alt="Card image">
+        </div>
+
+    </div>
+</div>
+
+<form #commentForm="ngForm" (ngSubmit)="addComment(comment)">
+    <div class="form-group">
+        <label>Comment</label>
+        <input #comment="ngModel" [(ngModel)]="comment.content" name="comment" type="text" class="form-control" max="1000" required>
+    </div>
+    <div *ngIf="comment.invalid && (comment.dirty || comment.touched)" class="alert alert-danger">
+        <div *ngIf="comment.errors.required">
+            First name is required.
+        </div>
+        <div *ngIf="comment.errors.max">
+            Max alowed 1000 characters!
+        </div>
+    </div>
+
+    <div class="input-group col-md-5 pl-0 my-lg-4 my-2">
+        <button [disabled]="!commentForm.valid" type="submit" class="btn btn-primary mr-2">Add Comment</button>
+    </div>
+</form>
+
+<div>
+    <h2>Comments:</h2>
+    <div class="card mb-3" *ngFor="let comment of comments">
+        <h4 class="card-header" >{{comment.user?.first_name}} {{comment.user?.last_name}}</h4>
+        <h6 class="card-header">{{comment.created_at}}</h6>
+        <div class="card-body">
+            {{comment.content}}
+        </div>
+
+
+
+
+    </div>
+</div>
+
+
+
