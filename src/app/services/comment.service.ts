@@ -16,7 +16,6 @@ export class CommentService {
 
 
     addComment(comment, gallery_id, user_id) {
-        console.log(comment);
         return new Observable((o: Observer<any>) => {
             this.http.post('http://localhost:8000/api/commentAdd', {
                 'comment': comment,
@@ -40,6 +39,18 @@ export class CommentService {
             }).subscribe((comments: any[]) => {
 
                 o.next(comments);
+                return o.complete();
+            });
+        });
+    }
+
+    removeComment(comment) {
+        return new Observable((o: Observer<any>) => {
+            this.http.delete('http://localhost:8000/api/removeComment/' + comment.id, {
+                headers: this.authService.getRequestHeaders()
+            }).subscribe((c: any[]) => {
+
+                o.next(c);
                 return o.complete();
             });
         });

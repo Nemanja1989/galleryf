@@ -12,6 +12,7 @@ export class MygalleryComponent implements OnInit {
     private galleries;
     private galleryService: GalleryService;
     private selectCount = 10;
+    private galleriesCount;
 
     constructor(private injector: Injector) {
         this.loadData();
@@ -27,9 +28,10 @@ export class MygalleryComponent implements OnInit {
         this.galleryService = this.injector.get(GalleryService);
         this.galleryService.getMyGalleries(userId, this.selectCount).subscribe(
             data => {
-                console.log(data);
                 this.galleries = data;
-                console.log(this.galleries);
+
+                // galleries count
+                this.galleriesCount = this.galleries.length;
             },
             (err: HttpErrorResponse) => {
                 alert(`Backend returned code ${err.status} with message: ${err.error}`);

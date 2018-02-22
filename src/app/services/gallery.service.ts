@@ -55,11 +55,21 @@ export class GalleryService {
                 params: {galleryId: id},
                 headers: this.authService.getRequestHeaders()
             }).subscribe((gallery: any[]) => {
-                console.log(gallery);
-                console.log('asd');
                 this.gallery = gallery;
 
                 o.next(this.gallery);
+                return o.complete();
+            });
+        });
+    }
+
+    removeGallery(gallery_id: string) {
+        return new Observable((o: Observer<any>) => {
+            this.http.delete('http://localhost:8000/api/removeGallery/' + gallery_id, {
+                headers: this.authService.getRequestHeaders()
+            }).subscribe((c: any[]) => {
+
+                o.next(c);
                 return o.complete();
             });
         });

@@ -1,26 +1,63 @@
 <div class="card mb-3">
     <div class="card mb-3">
-        <h3 class="card-header" ><a [routerLink]="['/galleries', gallery?.id]">{{gallery?.title}}</a></h3>
+        <h3 class="card-header" ><a href="/galleries/{{gallery?.id}}" >{{gallery?.title}}</a></h3>
         <div class="card-body">
-            <div>
-                <a [routerLink]="['/authors', gallery.author_id]">{{gallery.user?.first_name}} {{gallery.user?.last_name}}</a>
+            <div *ngIf="auth.isAuthenticated">
+                <a href="/authors/{{gallery?.author_id}}" >{{gallery.user?.first_name}} {{gallery.user?.last_name}}</a>
             </div>
+            <div *ngIf="!auth.isAuthenticated">
+            <p>{{gallery.user?.first_name}} {{gallery.user?.last_name}}</p>
+        </div>
             <div>
                 <p class="card-text">{{gallery.created_at}}</p>
             </div>
             <h5 class="card-title">Description</h5>
             <h6 class="card-subtitle text-muted">{{gallery.description}}</h6>
         </div>
-
-
-        <div *ngFor="let picture of gallery['pictures']">
-            <img style="height: 200px; width: 200px; display: block;" src="{{picture.picture_url}}" alt="Card image">
+        <div>
+            <button class="btn-danger" (click)="removeGallery(gallery.id)" *ngIf="gallery.author_id == user.id">Remove Gallery</button>
         </div>
 
     </div>
 </div>
 
-<form #commentForm="ngForm" (ngSubmit)="addComment(comment)">
+<!-- nice showing pictures -->
+<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item" *ngFor="let image of gallery.pictures; let index = index" [class.active]="index == 0">
+            <a href="{{image.picture_url}}" target="_blank">
+                <img src="{{image.picture_url}}" class="d-block w-100" alt="">
+            </a>
+        </div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+
+<!-- show all comments -->
+<div *ngIf="auth.isAuthenticated">
+    <h2>Comments:</h2>
+    <div class="card mb-3" *ngFor="let comment of comments">
+        <h4 class="card-header" >{{comment.user?.first_name}} {{comment.user?.last_name}}</h4>
+        <h6 class="card-header">{{comment.created_at}}</h6>
+        <div class="card-body">
+            {{comment.content}}
+        </div>
+        <div style="width: 100px;">
+            <button *ngIf="comment.user_id == user.id" type="submit" (click)="removeComment(comment)" class="btn btn-danger">Remove Comment</button>
+        </div>
+
+    </div>
+</div>
+
+<!-- add comment form-->
+<form #commentForm="ngForm" (ngSubmit)="addComment(comment); commentForm.reset();" *ngIf="auth.isAuthenticated">
     <div class="form-group">
         <label>Comment</label>
         <input #comment="ngModel" [(ngModel)]="comment.content" name="comment" type="text" class="form-control" max="1000" required>
@@ -39,20 +76,6 @@
     </div>
 </form>
 
-<div>
-    <h2>Comments:</h2>
-    <div class="card mb-3" *ngFor="let comment of comments">
-        <h4 class="card-header" >{{comment.user?.first_name}} {{comment.user?.last_name}}</h4>
-        <h6 class="card-header">{{comment.created_at}}</h6>
-        <div class="card-body">
-            {{comment.content}}
-        </div>
-
-
-
-
-    </div>
-</div>
 
 
 

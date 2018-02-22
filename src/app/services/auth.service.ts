@@ -27,7 +27,6 @@ export class AuthService {
             }).subscribe((data: { token: string }) => {
                 window.localStorage.setItem('loginToken', data.token);
                 this.isAuthenticated = true;
-
                 // set user
                 this.setUser(email);
 
