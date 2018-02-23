@@ -14,12 +14,11 @@
             <h5 class="card-title">Description</h5>
             <h6 class="card-subtitle text-muted">{{gallery.description}}</h6>
         </div>
-        <div>
+        <div style="display: inline;">
             <button class="btn-danger" (click)="removeGallery(gallery.id)" *ngIf="gallery.author_id == user.id">Remove Gallery</button>
-        </div>
-        <div>
             <button class="btn-info" (click)="editGallery(gallery.id)" *ngIf="gallery.author_id == user.id">Edit Gallery</button>
         </div>
+
 
     </div>
 </div>
@@ -44,7 +43,7 @@
 </div>
 
 <!-- show all comments -->
-<div *ngIf="auth.isAuthenticated">
+<div>
     <h2>Comments:</h2>
     <div class="card mb-3" *ngFor="let comment of comments">
         <h4 class="card-header" >{{comment.user?.first_name}} {{comment.user?.last_name}}</h4>

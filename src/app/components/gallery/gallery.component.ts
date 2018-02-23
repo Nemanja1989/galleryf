@@ -34,7 +34,11 @@ export class GalleryComponent implements OnInit {
 
         // set user for comment check is owner
         this.user = JSON.parse(window.localStorage.getItem('user'));
-        this.user = this.user[0];
+        if (this.user !== null) {
+            this.user = this.user[0];
+        } else {
+            this.user = new User();
+        }
 
         this.loadData();
         this.loadComments();
