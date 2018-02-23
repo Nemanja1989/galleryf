@@ -61,7 +61,6 @@ export class GalleryComponent implements OnInit {
                 alert(`Backend returned code ${err.status} with message: ${err.error}`);
             }
         );
-        // ovde loaduj commentare
     }
 
     addComment(comment: Comment) {

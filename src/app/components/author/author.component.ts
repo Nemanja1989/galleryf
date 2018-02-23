@@ -11,28 +11,31 @@ import {ActivatedRoute, Params} from '@angular/router';
 export class AuthorComponent implements OnInit {
 
     private galleries;
-    private galleryService: GalleryService;
-    private params;
     private selectCount = 10;
+    private galleriesCount;
 
     constructor(private injector: Injector,
-                private route: ActivatedRoute) {
+                private route: ActivatedRoute,
+                private galleryService: GalleryService) {
         this.route.params.subscribe((params: Params) => {
-            this.params = params;
-            // this.gallery = this.galleryService.getById(params['id']);
+            // set service data
+            this.galleryService.area = 'authors';
+            this.galleryService.search_term = params['term'];
+            if (params['term'] === undefined) {
+                this.galleryService.search_term = '';
+            }
+            this.galleryService.author_id = params['id'];
 
+            // now load data
+            this.loadData();
         });
-
-        this.loadData();
     }
 
-    loadData() {
-        this.galleryService = this.injector.get(GalleryService);
-        this.galleryService.getMyGalleries(this.params['id'], this.selectCount).subscribe(
+    private loadData() {
+        this.galleryService.loadGalleries().subscribe(
             data => {
-                console.log(data);
-                this.galleries = data;
-                console.log(this.galleries);
+                this.galleries = data['galleries'];
+                this.galleriesCount = data['count'];
             },
             (err: HttpErrorResponse) => {
                 alert(`Backend returned code ${err.status} with message: ${err.error}`);
@@ -45,6 +48,7 @@ export class AuthorComponent implements OnInit {
 
     loadMore() {
         this.selectCount += 10;
+        this.galleryService.selectCount += 10;
         this.loadData();
     }
 

@@ -8,15 +8,21 @@ import {Gallery} from '../models/gallery';
 @Injectable()
 export class GalleryService {
 
-    private galleries;
-    private myGalleries;
-    private gallery;
+    public gallery;
+    public selectCount = 10;
+    public area = '';
+    public author_id = 0;
+    public search_term = '';
+    public loadedGalleries: any[];
+    public possibleCount;
 
     constructor(private http: HttpClient,
                 private authService: AuthService) {
     }
 
+    /*
     getGalleries(selectCount) {
+        this.selectCount = selectCount;
         // clear array after logout
         this.galleries = [];
         return new Observable((o: Observer<any>) => {
@@ -30,9 +36,32 @@ export class GalleryService {
                 return o.complete();
             });
         });
+    }*/
+
+    loadGalleries() {
+        // clear array after logout
+        this.loadedGalleries = [];
+        return new Observable((o: Observer<any>) => {
+            this.http.get('http://localhost:8000/api/loadGalleries', {
+                params: {selectCount: this.selectCount.toString(),
+                        area: this.area,
+                        author_id: this.author_id.toString(),
+                        search_term: this.search_term
+                },
+                headers: this.authService.getRequestHeaders()
+            }).subscribe((data: any[]) => {
+                this.loadedGalleries = data['galleries'];
+                this.possibleCount = data['count'];
+
+                o.next(data);
+                return o.complete();
+            });
+        });
     }
 
+    /*
     getMyGalleries(userId, selectCount) {
+        this.selectCount = selectCount;
         // clear array after logout
         this.myGalleries = [];
         return new Observable((o: Observer<any>) => {
@@ -46,10 +75,9 @@ export class GalleryService {
                 return o.complete();
             });
         });
-    }
+    }*/
 
     getById(id: string) {
-        console.log(id);
         return new Observable((o: Observer<any>) => {
             this.http.get('http://localhost:8000/api/singleGallery', {
                 params: {galleryId: id},

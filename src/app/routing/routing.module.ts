@@ -30,6 +30,10 @@ const appRoutes: Routes = [
         component: HomepageComponent
     },
     {
+        path: 'search/:term',
+        component: HomepageComponent
+    },
+    {
         path: 'galleries/:id',
         component: GalleryComponent
     },
@@ -38,9 +42,17 @@ const appRoutes: Routes = [
         component: AuthorComponent
     },
     {
+        path: 'authors/:id/search/:term',
+        component: AuthorComponent
+    },
+    {
         path: 'my-galleries',
         component: MygalleryComponent,
         canActivate: [ AuthGuard ],
+    },
+    {
+        path: 'my-galleries/search/:term',
+        component: MygalleryComponent
     },
     {
         path: 'login',

@@ -3,14 +3,14 @@
         <h3 class="card-header" ><a [routerLink]="['/galleries', gallery.id]">{{gallery.title}}</a></h3>
         <div class="card-body">
             <div>
-                <a [routerLink]="['/authors', gallery.author_id]">{{gallery.first_name}} {{gallery.last_name}}</a>
+                <a [routerLink]="['/authors', gallery.author_id]">{{gallery.user.first_name}} {{gallery.user.last_name}}</a>
             </div>
             <div class="card-body">
                 <p class="card-text">{{gallery.created_at}}</p>
             </div>
             <h5 class="card-title">Description</h5>
             <h6 class="card-subtitle text-muted">{{gallery.description}}</h6>
-            <img style="height: 200px; width: 40%; display: block;" src="{{gallery.pictures[0].picture_url}}" alt="Card image">
+            <img style="height: 200px; width: 300px; display: block;" src="{{gallery.pictures[0].picture_url}}" alt="Card image">
         </div>
     </div>
 </div>
@@ -18,4 +18,4 @@
 <div *ngIf="galleriesCount == 0">
     <p class="alert-danger">No Galleries!</p>
 </div>
-<button class="badge-light" (click)="loadMore()" *ngIf="galleriesCount > selectCount">Load More</button>
+<button class="badge-light" (click)="loadMore()" *ngIf="galleriesCount >= selectCount">Load More</button>

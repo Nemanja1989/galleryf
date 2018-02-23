@@ -3,6 +3,7 @@ import {User} from '../../models/user';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
+import {GalleryService} from '../../services/gallery.service';
 
 @Component({
     selector: 'app-register',
@@ -14,9 +15,11 @@ export class RegisterComponent implements OnInit {
 
     constructor(private http: HttpClient,
                 private authService: AuthService,
-                private router: Router) {
+                private router: Router,
+                private galleryService: GalleryService) {
         // create empty team because of ngModel in form
         this.user = new User(0, '', '', '', '');
+        this.galleryService.area = '';
     }
 
     ngOnInit() {
@@ -38,22 +41,6 @@ export class RegisterComponent implements OnInit {
                 alert(`${err.error.error}`);
             }
         );
-        /*
-        return new Observable((o: Observer<any>) => {
-            this.http.post('http://localhost:8000/api/register', {
-                'first_name': user.first_name,
-                'last_name': user.last_name,
-                'email': user.email,
-                'password': user.password
-            }, {
-                headers: this.authService.getRequestHeaders()
-            }).subscribe((c: any) => {
-                let newUser = new User(c.id, c.first_name, c.last_name, c.email, c.password);
-
-                o.next(this.user);
-                return o.complete();
-            });
-        });*/
     }
 
 }

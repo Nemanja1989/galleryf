@@ -3,10 +3,10 @@
         <h3 class="card-header" ><a [routerLink]="['/galleries', gallery.id]">{{gallery.title}}</a></h3>
         <div class="card-body">
             <div *ngIf="auth.isAuthenticated">
-                <a [routerLink]="['/authors', gallery.author_id]">{{gallery.first_name}} {{gallery.last_name}}</a>
+                <a [routerLink]="['/authors', gallery.author_id]">{{gallery.user.first_name}} {{gallery.user.last_name}}</a>
             </div>
             <div *ngIf="!auth.isAuthenticated">
-                <p>{{gallery.first_name}} {{gallery.last_name}}</p>
+                <p>{{gallery.user.first_name}} {{gallery.user.last_name}}</p>
             </div>
             <div class="card-body">
                 <p class="card-text">{{gallery.created_at}}</p>
@@ -21,4 +21,4 @@
 <div *ngIf="galleriesCount == 0">
     <p class="alert-danger">No Galleries!</p>
 </div>
-<button class="badge-light" (click)="loadMore()" *ngIf="galleriesCount > selectCount">Load More</button>
+<button class="badge-light" (click)="loadMore()" *ngIf="galleriesCount >= selectCount">Load More</button>
