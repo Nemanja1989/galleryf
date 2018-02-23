@@ -4,6 +4,7 @@ import {Observer} from 'rxjs/Observer';
 import {HttpClient} from '@angular/common/http';
 import {AuthService} from './auth.service';
 import {Gallery} from '../models/gallery';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Injectable()
 export class GalleryService {
@@ -20,23 +21,42 @@ export class GalleryService {
                 private authService: AuthService) {
     }
 
-    /*
-    getGalleries(selectCount) {
-        this.selectCount = selectCount;
-        // clear array after logout
-        this.galleries = [];
+    update(gallery: Gallery) {
         return new Observable((o: Observer<any>) => {
-            this.http.get('http://localhost:8000/api/all-galleries', {
-                params: {selectCount: selectCount},
+            this.http.put('http://localhost:8000/api/galleries', {
+                'params': gallery
+            }, {
                 headers: this.authService.getRequestHeaders()
-            }).subscribe((galleries: any[]) => {
-                this.galleries = galleries['data'];
+            }).subscribe((c: any) => {
 
-                o.next(this.galleries);
+                o.next(c);
                 return o.complete();
             });
         });
-    }*/
+
+    }
+
+    public create(gallery: Gallery, userId) {
+        return new Observable((o: Observer<any>) => {
+            this.http.post('http://localhost:8000/api/galleries', {
+                'title': gallery.title,
+                'description': gallery.description,
+                'images': gallery.images,
+                'user_id': userId.toString()
+            }, {
+                headers: this.authService.getRequestHeaders()
+            }).subscribe(
+                (data: Gallery) => {
+                    o.next(data);
+
+                    return o.complete();
+                },
+                (err) => {
+                    return o.error(err);
+                }
+            );
+        });
+    }
 
     loadGalleries() {
         // clear array after logout
@@ -58,24 +78,6 @@ export class GalleryService {
             });
         });
     }
-
-    /*
-    getMyGalleries(userId, selectCount) {
-        this.selectCount = selectCount;
-        // clear array after logout
-        this.myGalleries = [];
-        return new Observable((o: Observer<any>) => {
-            this.http.get('http://localhost:8000/api/my-galleries', {
-                params: {userId: userId, selectCount: selectCount},
-                headers: this.authService.getRequestHeaders()
-            }).subscribe((galleries: any[]) => {
-                this.myGalleries = galleries['data'];
-
-                o.next(this.myGalleries);
-                return o.complete();
-            });
-        });
-    }*/
 
     getById(id: string) {
         return new Observable((o: Observer<any>) => {

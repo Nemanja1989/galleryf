@@ -1,16 +1,16 @@
 import {Component, OnInit} from '@angular/core';
-import {GalleryService} from '../../services/gallery.service';
-import {Router} from '@angular/router';
 import {Gallery} from '../../models/gallery';
+import {ActivatedRoute, Params, Router} from '@angular/router';
+import {GalleryService} from '../../services/gallery.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {Image} from '../../models/image';
 
 @Component({
-    selector: 'app-creategallery',
-    templateUrl: './creategallery.component.html',
-    styleUrls: ['./creategallery.component.css']
+    selector: 'app-edit-gallery',
+    templateUrl: './edit-gallery.component.html',
+    styleUrls: ['./edit-gallery.component.css']
 })
-export class CreategalleryComponent implements OnInit {
+export class EditGalleryComponent implements OnInit {
 
     public gallery: Gallery = new Gallery();
 
@@ -18,20 +18,36 @@ export class CreategalleryComponent implements OnInit {
 
     constructor(
         private galleryService: GalleryService,
-        private router: Router
+        private router: Router,
+        private route: ActivatedRoute
     ) {
         this.galleryService.area = '';
+        this.route.params.subscribe((params: Params) => {
+            this.galleryService.getById(params['id']).subscribe(
+                data => {
+                    // small hack
+                    data[0]['images'] = data[0]['pictures'];
+                    this.gallery = data[0];
+                },
+                (err: HttpErrorResponse) => {
+                    alert(`Backend returned code ${err.status} with message: ${err.error}`);
+                }
+            );
+
+        });
     }
 
     ngOnInit() {
     }
 
+    cancel() {
+        this.router.navigateByUrl('/galleries/' + this.gallery.id);
+    }
+
     public submit() {
-        const user = JSON.parse(window.localStorage.getItem('user'));
-        const userId = user[0]['id'];
-        this.galleryService.create(this.gallery, userId)
+        this.galleryService.update(this.gallery)
             .subscribe(() => {
-                this.router.navigateByUrl('/');
+                this.router.navigateByUrl('/galleries/' + this.gallery.id);
             }, (e) => {
                 let errorObjects = e.error.errors;
 
@@ -42,10 +58,6 @@ export class CreategalleryComponent implements OnInit {
                         alert(`${err.error.error}`);
                     });
             });
-    }
-
-    cancel() {
-        this.router.navigateByUrl('/my-galleries');
     }
 
     public addNewImage() {
@@ -82,6 +94,12 @@ export class CreategalleryComponent implements OnInit {
     public removeImage(image: Image) {
         const index = this.gallery.images.indexOf(image);
 
+
+        if (index === 0) {
+            return;
+        }
+
         this.gallery.images.splice(index, 1);
     }
+
 }

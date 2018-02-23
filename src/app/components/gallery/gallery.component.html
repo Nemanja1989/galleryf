@@ -17,6 +17,9 @@
         <div>
             <button class="btn-danger" (click)="removeGallery(gallery.id)" *ngIf="gallery.author_id == user.id">Remove Gallery</button>
         </div>
+        <div>
+            <button class="btn-info" (click)="editGallery(gallery.id)" *ngIf="gallery.author_id == user.id">Edit Gallery</button>
+        </div>
 
     </div>
 </div>

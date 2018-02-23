@@ -20,6 +20,7 @@ import { GalleryComponent } from './components/gallery/gallery.component';
 import { AuthorComponent } from './components/author/author.component';
 import {CommentService} from './services/comment.service';
 import { SearchComponent } from './components/search/search/search.component';
+import { EditGalleryComponent } from './components/edit-gallery/edit-gallery.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { SearchComponent } from './components/search/search/search.component';
         MygalleryComponent,
         GalleryComponent,
         AuthorComponent,
-        SearchComponent
+        SearchComponent,
+        EditGalleryComponent
     ],
     imports: [
         BrowserModule,

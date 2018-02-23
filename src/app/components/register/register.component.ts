@@ -18,7 +18,7 @@ export class RegisterComponent implements OnInit {
                 private router: Router,
                 private galleryService: GalleryService) {
         // create empty team because of ngModel in form
-        this.user = new User(0, '', '', '', '');
+        this.user = new User();
         this.galleryService.area = '';
     }
 

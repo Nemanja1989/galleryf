@@ -1,3 +1,85 @@
-<p>
-  creategallery works!
-</p>
+<form #galleryForm="ngForm" (ngSubmit)="submit()">
+    <hr>
+    <h3>Create Gallery</h3>
+    <hr>
+
+    <div *ngIf="errors.length > 0" class="alert alert-danger" role="alert">
+        <div *ngFor="let error of errors">{{ error }}</div>
+    </div>
+
+    <div class="form-group">
+        <label for="title"> Title</label>
+        <input #title="ngModel" [(ngModel)]="gallery.title" type="text" required minlength="2" maxlength="255"
+               class="form-control" id="title" name="title">
+
+        <div *ngIf="title.invalid && (title.dirty || title.touched)" class="alert alert-danger">
+            <div *ngIf="title.errors.required">Name is required.</div>
+            <div *ngIf="title.errors.minlength">Name must be at least 2 characters long.</div>
+        </div>
+
+        <div *ngIf="gallery.title.length === 255" class="alert alert-danger">
+            <div>Name must be lees than 255 characters.</div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="description"> Description</label>
+        <textarea #description="ngModel" [(ngModel)]="gallery.description" type="text" maxlength="1000"
+                  class="form-control" id="description" name="description">
+        </textarea>
+
+        <div *ngIf="(description.dirty || description.touched) && gallery.description.length === 1000"
+             class="alert alert-danger">
+            <div>Name must be at most 1000 characters long.</div>
+        </div>
+
+    </div>
+
+    <div class="form-group">
+        <label>Images</label>
+    </div>
+
+    <div class="form-group" *ngFor="let image of gallery.images; trackBy: setOrder;">
+
+        <div class="input-group">
+            <span class="input-group-addon">{{ image.order }}</span>
+            <input #url="ngModel" [(ngModel)]="image.picture_url" type="text"
+                   required pattern="(http)?s?:?(\/\/[^']*\.(?:png|jpg|jpeg))"
+                   class="form-control" [ngModelOptions]="{standalone: true}">
+            <span class="input-group-btn" *ngIf="gallery.images.length > 1">
+                <a class="btn btn-default" type="button" (click)="moveImageUp(image);">🡡</a>
+            </span>
+            <span class="input-group-btn" *ngIf="gallery.images.length > 1">
+                <a class="btn btn-default" type="button" (click)="moveImageDown(image);">🡣</a>
+            </span>
+            <span class="input-group-btn" *ngIf="gallery.images.length > 1">
+                <a class="btn btn-danger" type="button" (click)="removeImage(image);">X</a>
+            </span>
+        </div>
+
+        <div *ngIf="(url.invalid || url.pristine) && (url.dirty || url.touched)" class="alert alert-danger">
+            <div>Provide valid URL with extension .jpg, .jpeg or .png.</div>
+        </div>
+
+    </div>
+
+    <small>(provide at least one URL)</small>
+
+    <br>
+    <br>
+
+    <a style="width: 150px;" class="btn btn-danger btn-block" (click)="addNewImage();">
+        Add new image
+    </a>
+
+    <br>
+
+    <button style="width: 100px;" type="submit" [disabled]="!galleryForm.valid"
+            class="btn btn-info btn-block">Create
+    </button>
+    <button style="width: 100px;"
+            class="btn btn-info btn-block" (click)="cancel()">Cancel
+    </button>
+
+</form>
+

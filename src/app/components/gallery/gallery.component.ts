@@ -52,6 +52,10 @@ export class GalleryComponent implements OnInit {
         );
     }
 
+    editGallery(gallery_id) {
+        this.router.navigateByUrl('/edit-gallery/' + gallery_id);
+    }
+
     loadComments() {
         this.commentService.loadCommentsById(this.params['id']).subscribe(
             data => {

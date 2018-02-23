@@ -9,6 +9,7 @@ import {MygalleryComponent} from '../components/mygallery/mygallery.component';
 import {AuthGuard} from '../guards/auth.guard';
 import {GalleryComponent} from '../components/gallery/gallery.component';
 import {AuthorComponent} from '../components/author/author.component';
+import {EditGalleryComponent} from '../components/edit-gallery/edit-gallery.component';
 
 @NgModule({
     imports: [
@@ -31,7 +32,8 @@ const appRoutes: Routes = [
     },
     {
         path: 'search/:term',
-        component: HomepageComponent
+        component: HomepageComponent,
+        canActivate: [ AuthGuard ]
     },
     {
         path: 'galleries/:id',
@@ -39,11 +41,18 @@ const appRoutes: Routes = [
     },
     {
         path: 'authors/:id',
-        component: AuthorComponent
+        component: AuthorComponent,
+        canActivate: [ AuthGuard ],
+    },
+    {
+        path: 'edit-gallery/:id',
+        component: EditGalleryComponent,
+        canActivate: [ AuthGuard ],
     },
     {
         path: 'authors/:id/search/:term',
-        component: AuthorComponent
+        component: AuthorComponent,
+        canActivate: [ AuthGuard ],
     },
     {
         path: 'my-galleries',
@@ -52,7 +61,8 @@ const appRoutes: Routes = [
     },
     {
         path: 'my-galleries/search/:term',
-        component: MygalleryComponent
+        component: MygalleryComponent,
+        canActivate: [ AuthGuard ],
     },
     {
         path: 'login',
